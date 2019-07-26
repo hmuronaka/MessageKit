@@ -161,22 +161,24 @@ open class MessageContentCell: MessageCollectionViewCell {
         let touchLocation = gesture.location(in: self)
 
         switch true {
-        case messageContainerView.frame.contains(touchLocation) && !cellContentView(canHandle: convert(touchLocation, to: messageContainerView)):
+        case messageContainerView.frame.contains(touchLocation) && !cellContentView(canHandle: convert(touchLocation, to: messageContainerView)) && isTapableElement(.message):
             delegate?.didTapMessage(in: self)
-        case avatarView.frame.contains(touchLocation):
+        case avatarView.frame.contains(touchLocation) && isTapableElement(.avatar):
             delegate?.didTapAvatar(in: self)
-        case cellTopLabel.frame.contains(touchLocation):
+        case cellTopLabel.frame.contains(touchLocation) && isTapableElement(.topLabel):
             delegate?.didTapCellTopLabel(in: self)
-        case cellBottomLabel.frame.contains(touchLocation):
+        case cellBottomLabel.frame.contains(touchLocation) && isTapableElement(.bottomLabel):
             delegate?.didTapCellBottomLabel(in: self)
-        case messageTopLabel.frame.contains(touchLocation):
+        case messageTopLabel.frame.contains(touchLocation) && isTapableElement(.messageTopLabel):
             delegate?.didTapMessageTopLabel(in: self)
-        case messageBottomLabel.frame.contains(touchLocation):
+        case messageBottomLabel.frame.contains(touchLocation) && isTapableElement(.messageBottomLabel):
             delegate?.didTapMessageBottomLabel(in: self)
-        case accessoryView.frame.contains(touchLocation):
+        case accessoryView.frame.contains(touchLocation) && isTapableElement(.accessoryView):
             delegate?.didTapAccessoryView(in: self)
-        default:
+        case isTapableElement(.background):
             delegate?.didTapBackground(in: self)
+        default:
+            break
         }
     }
 
@@ -339,5 +341,9 @@ open class MessageContentCell: MessageCollectionViewCell {
         }
 
         accessoryView.frame = CGRect(origin: origin, size: attributes.accessoryViewSize)
+    }
+    
+    private func isTapableElement(_ elementType: MessageCellElementType) -> Bool {
+        return delegate?.enableTap(in: self, elementType: .message) ?? false
     }
 }
