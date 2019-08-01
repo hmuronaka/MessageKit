@@ -339,10 +339,16 @@ open class MessageContentCell: MessageCollectionViewCell {
         case .natural:
             fatalError(MessageKitError.avatarPositionUnresolved)
         }
-
-        accessoryView.frame = CGRect(origin: origin, size: attributes.accessoryViewSize)
+        
+        // accessoryViewの位置を固定で調整する。
+        // TODO 一般化　一般化する時間がないため...
+        //      delegateにメソッドを追加しても、delegate設定前にこのメソッドが呼ばれるため設定できない。
+        var accessoryViewFrame = CGRect.zero
+        accessoryViewFrame.origin = CGPoint(x: UIScreen.main.bounds.width - 123, y: origin.y)
+        accessoryViewFrame.size = CGSize(width: 120, height: 24)
+        self.accessoryView.frame = accessoryViewFrame
     }
-    
+
     private func isTapableElement(_ elementType: MessageCellElementType) -> Bool {
         return delegate?.enableTap(in: self, elementType: .message) ?? false
     }
