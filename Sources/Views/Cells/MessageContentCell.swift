@@ -344,8 +344,8 @@ open class MessageContentCell: MessageCollectionViewCell {
         // TODO 一般化　一般化する時間がないため...
         //      delegateにメソッドを追加しても、delegate設定前にこのメソッドが呼ばれるため設定できない。
         var accessoryViewFrame = CGRect.zero
-        accessoryViewFrame.origin = CGPoint(x: UIScreen.main.bounds.width - 123, y: origin.y)
-        accessoryViewFrame.size = CGSize(width: 120, height: 24)
+        accessoryViewFrame.origin = CGPoint(x: UIScreen.main.bounds.width - 50, y: origin.y)
+        accessoryViewFrame.size = CGSize(width: 50, height: 24)
         self.accessoryView.frame = accessoryViewFrame
     }
 
