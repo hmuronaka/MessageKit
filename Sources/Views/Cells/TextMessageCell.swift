@@ -123,8 +123,8 @@ extension TextMessageCell: MessageLabelDelegate {
         self.delegate?.didSelectHashtag(in: self, hashtag:  hashtag)
     }
     
-    public func didSelectCustom(_ pattern: String, match: String?) {
-        self.delegate?.didSelectCustom(in: self, pattern: pattern, match: match)
+    public func didSelectCustom(_ detectorType: DetectorType, pattern: String, match: String?) {
+        self.delegate?.didSelectCustom(in: self, detectorType: detectorType, pattern: pattern, match: match)
     }
 
 }

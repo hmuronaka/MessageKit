@@ -498,7 +498,7 @@ open class MessageLabel: UILabel {
             case .mention:
                 handleMention(match)
             default:
-                handleCustom(pattern, match: match)
+                handleCustom(detectorType, pattern: pattern, match: match)
             }
         }
     }
@@ -532,8 +532,8 @@ open class MessageLabel: UILabel {
         delegate?.didSelectMention(mention)
     }
 
-    private func handleCustom(_ pattern: String, match: String) {
-        delegate?.didSelectCustom(pattern, match: match)
+    private func handleCustom(_ detectorType: DetectorType, pattern: String, match: String) {
+        delegate?.didSelectCustom(detectorType, pattern: pattern, match: match)
     }
 
 }
