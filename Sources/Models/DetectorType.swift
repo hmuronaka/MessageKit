@@ -31,11 +31,12 @@ public enum DetectorType: Hashable {
     case phoneNumber
     case url
     case transitInformation
-    case custom(NSRegularExpression)
+    // 1つ目のStringはdetectorTypeを識別する文字列. fileやcustomMentionなど
+    case custom(String, NSRegularExpression)
 
     // swiftlint:disable force_try
-    public static var hashtag = DetectorType.custom(try! NSRegularExpression(pattern: "#[a-zA-Z0-9]{4,}", options: []))
-    public static var mention = DetectorType.custom(try! NSRegularExpression(pattern: "@[a-zA-Z0-9]{4,}", options: []))
+    public static var hashtag = DetectorType.custom("hashtag", try! NSRegularExpression(pattern: "#[a-zA-Z0-9]{4,}", options: []))
+    public static var mention = DetectorType.custom("mention", try! NSRegularExpression(pattern: "@[a-zA-Z0-9]{4,}", options: []))
     // swiftlint:enable force_try
 
     internal var textCheckingType: NSTextCheckingResult.CheckingType {
@@ -70,7 +71,7 @@ public enum DetectorType: Hashable {
         case .phoneNumber: return 2
         case .url: return 3
         case .transitInformation: return 4
-        case .custom(let regex): return regex.hashValue
+        case .custom(_, let regex): return regex.hashValue
         }
     }
 

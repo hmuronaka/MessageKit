@@ -146,7 +146,8 @@ open class MessageLabel: UILabel {
     
     open internal(set) var mentionAttributes: [NSAttributedString.Key: Any] = defaultAttributes
 
-    open internal(set) var customAttributes: [NSRegularExpression: [NSAttributedString.Key: Any]] = [:]
+    // customごとにAttributedStringを設定できるように変更。
+    open internal(set) var customAttributes: [NSRegularExpression: ([NSAttributedString.Key: Any], String)] = [:]
 
     public func setAttributes(_ attributes: [NSAttributedString.Key: Any], detector: DetectorType) {
         switch detector {
@@ -164,8 +165,8 @@ open class MessageLabel: UILabel {
             mentionAttributes = attributes
         case .hashtag:
             hashtagAttributes = attributes
-        case .custom(let regex):
-            customAttributes[regex] = attributes
+        case .custom(let type, let regex):
+            customAttributes[regex] = (attributes, type)
         }
         if isConfiguring {
             attributesNeedUpdate = true
@@ -299,8 +300,8 @@ open class MessageLabel: UILabel {
             return mentionAttributes
         case .hashtag:
             return hashtagAttributes
-        case .custom(let regex):
-            return customAttributes[regex] ?? MessageLabel.defaultAttributes
+        case .custom(_, let regex):
+            return customAttributes[regex]?.0 ?? MessageLabel.defaultAttributes
         }
 
     }
@@ -368,7 +369,7 @@ open class MessageLabel: UILabel {
 
     private func parseForMatches(with detector: DetectorType, in text: NSAttributedString, for range: NSRange) -> [NSTextCheckingResult] {
         switch detector {
-        case .custom(let regex):
+        case .custom(_, let regex):
             return regex.matches(in: text.string, options: [], range: range)
         default:
             fatalError("You must pass a .custom DetectorType")
@@ -409,7 +410,8 @@ open class MessageLabel: UILabel {
                 rangesForDetectors.updateValue(ranges, forKey: .transitInformation)
             case .regularExpression:
                 guard let text = text, let regex = result.regularExpression, let range = Range(result.range, in: text) else { return }
-                let detector = DetectorType.custom(regex)
+                let type = customAttributes[regex]?.1 ?? ""
+                let detector = DetectorType.custom(type, regex)
                 var ranges = rangesForDetectors[detector] ?? []
                 let tuple: (NSRange, MessageTextCheckingType) = (result.range, .custom(pattern: regex.pattern, match: String(text[range])))
                 ranges.append(tuple)
