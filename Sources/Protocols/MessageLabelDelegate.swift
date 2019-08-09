@@ -74,7 +74,7 @@ public protocol MessageLabelDelegate: AnyObject {
     /// - Parameters:
     ///   - pattern: the pattern of the regular expression
     ///   - match: part that match with the regular expression
-    func didSelectCustom(_ pattern: String, match: String?)
+    func didSelectCustom(_ detectorType:DetectorType, pattern: String, match: String?)
 
 }
 
@@ -94,6 +94,6 @@ public extension MessageLabelDelegate {
 
     func didSelectHashtag(_ hashtag: String) {}
 
-    func didSelectCustom(_ pattern: String, match: String?) {}
+    func didSelectCustom(_ detectorType:DetectorType, pattern: String, match: String?) {}
 
 }

@@ -206,7 +206,7 @@ public protocol MessageCellDelegate: MessageLabelDelegate {
     /// - Parameters:
     ///   - pattern: the pattern of the regular expression
     ///   - match: part that match with the regular expression
-    func didSelectCustom(in cell: MessageContentCell, pattern: String, match: String?)
+    func didSelectCustom(in cell: MessageContentCell, detectorType: DetectorType, pattern: String, match: String?)
     
     // MARK: for layout
     /// アクセサリビューのframeを算出する。
@@ -265,7 +265,7 @@ public extension MessageCellDelegate {
     
     func didSelectHashtag(in cell: MessageContentCell, hashtag: String) {}
     
-    func didSelectCustom(in cell: MessageContentCell, pattern: String, match: String?) {}
+    func didSelectCustom(in cell: MessageContentCell, detectorType: DetectorType, pattern: String, match: String?) {}
     
     func calculateAccessoryViewFrame(in cell: MessageContentCell, originalOrigin: CGPoint, originalSize: CGSize) -> CGRect?  { return nil }
 }
