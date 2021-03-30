@@ -165,7 +165,7 @@ open class MessageLabel: UILabel {
             mentionAttributes = attributes
         case .hashtag:
             hashtagAttributes = attributes
-        case .custom(let type, let regex):
+        case .custom(let type, let regex, _):
             customAttributes[regex] = (attributes, type)
         }
         if isConfiguring {
@@ -300,7 +300,7 @@ open class MessageLabel: UILabel {
             return mentionAttributes
         case .hashtag:
             return hashtagAttributes
-        case .custom(_, let regex):
+        case .custom(_, let regex, _):
             return customAttributes[regex]?.0 ?? MessageLabel.defaultAttributes
         }
 
@@ -369,7 +369,7 @@ open class MessageLabel: UILabel {
 
     private func parseForMatches(with detector: DetectorType, in text: NSAttributedString, for range: NSRange) -> [NSTextCheckingResult] {
         switch detector {
-        case .custom(_, let regex):
+        case .custom(_, let regex, _):
             return regex.matches(in: text.string, options: [], range: range)
         default:
             fatalError("You must pass a .custom DetectorType")
